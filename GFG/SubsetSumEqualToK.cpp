@@ -1,7 +1,6 @@
 class Solution {
 public:
-    bool memoization(int ind, int target, vector<int>& arr,
-                     vector<vector<int>>& dp) {
+    bool memoization(int ind, int target, vector<int>& arr, vector<vector<int>>& dp) {
         if (target == 0)
             return true;
         if (ind == 0)
