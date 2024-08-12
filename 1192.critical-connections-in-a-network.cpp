@@ -26,7 +26,6 @@ private:
       }
     }
   }
-
 public:
   vector<vector<int>> criticalConnections(int n, vector<vector<int>> &connections) {
     vector<int> adj[n];

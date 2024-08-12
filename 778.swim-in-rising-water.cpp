@@ -7,7 +7,6 @@
 // @lc code=start
 class DisjointSet {
   vector<int> rank, parent, size;
-
 public:
   DisjointSet(int n) {
     rank.resize(n + 1, 0);
@@ -53,13 +52,11 @@ public:
     }
   }
 };
-
 class Solution {
 private:
   bool isValid(int nrow, int ncol, int n) {
     return nrow >= 0 && nrow < n && ncol >= 0 && ncol < n;
   }
-
 public:
   int swimInWater(vector<vector<int>> &grid) {
     int n = grid.size();
