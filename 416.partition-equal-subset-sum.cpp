@@ -1,3 +1,10 @@
+/*
+ * @lc app=leetcode id=416 lang=cpp
+ *
+ * [416] Partition Equal Subset Sum
+ */
+
+// @lc code=start
 class Solution {
 public:
     bool memoization(int ind, int target, vector<int>& nums, vector<vector<int>>& dp) {
@@ -70,3 +77,5 @@ public:
         return spaceOptimization(n, target, nums);
     }
 };
+// @lc code=end
+
