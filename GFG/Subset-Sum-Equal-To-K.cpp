@@ -1,6 +1,7 @@
 class Solution {
-public:
-    bool memoization(int ind, int target, vector<int>& arr, vector<vector<int>>& dp) {
+  public:
+    bool memoization(int ind, int target, vector<int> &arr,
+                     vector<vector<int>> &dp) {
         if (target == 0)
             return true;
         if (ind == 0)
@@ -14,7 +15,7 @@ public:
         return dp[ind][target] = notTaken || taken;
     }
 
-    bool tabulation(int n, int k, vector<int>& arr) {
+    bool tabulation(int n, int k, vector<int> &arr) {
         vector<vector<bool>> dp(n, vector<bool>(k + 1, false));
         for (int i = 0; i < n; i++) {
             dp[i][0] = true;
@@ -35,7 +36,7 @@ public:
         return dp[n - 1][k];
     }
 
-    bool spaceOptimization(int n, int k, vector<int>& arr) {
+    bool spaceOptimization(int n, int k, vector<int> &arr) {
         vector<bool> prev(k + 1, false);
         prev[0] = true;
         if (arr[0] <= k) {
@@ -57,7 +58,7 @@ public:
         return prev[k];
     }
 
-    bool isSubsetSum(vector<int>& arr, int sum) {
+    bool isSubsetSum(vector<int> &arr, int sum) {
         int n = arr.size();
         vector<vector<int>> dp(n, vector<int>(sum + 1, -1));
         // return memoization(n - 1, sum, arr, dp);

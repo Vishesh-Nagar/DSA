@@ -6,9 +6,9 @@
 
 // @lc code=start
 class Solution {
-public:
-  int numWaterBottles(int numBottles, int numExchange) {
-    return numBottles + (numBottles - 1) / (numExchange - 1);
-  }
+  public:
+    int numWaterBottles(int numBottles, int numExchange) {
+        return numBottles + (numBottles - 1) / (numExchange - 1);
+    }
 };
 // @lc code=end

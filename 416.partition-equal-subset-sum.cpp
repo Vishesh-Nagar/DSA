@@ -6,8 +6,9 @@
 
 // @lc code=start
 class Solution {
-public:
-    bool memoization(int ind, int target, vector<int>& nums, vector<vector<int>>& dp) {
+  public:
+    bool memoization(int ind, int target, vector<int> &nums,
+                     vector<vector<int>> &dp) {
         if (target == 0)
             return true;
         if (ind == 0)
@@ -21,7 +22,7 @@ public:
         return dp[ind][target] = notTaken || taken;
     }
 
-    bool tabulation(int n, int k, vector<int>& nums) {
+    bool tabulation(int n, int k, vector<int> &nums) {
         vector<vector<bool>> dp(n, vector<bool>(k + 1, false));
         for (int i = 0; i < n; i++) {
             dp[i][0] = true;
@@ -42,7 +43,7 @@ public:
         return dp[n - 1][k];
     }
 
-    bool spaceOptimization(int n, int k, vector<int>& nums) {
+    bool spaceOptimization(int n, int k, vector<int> &nums) {
         vector<bool> prev(k + 1, false);
         prev[0] = true;
         if (nums[0] <= k) {
@@ -64,7 +65,7 @@ public:
         return prev[k];
     }
 
-    bool canPartition(vector<int>& nums) {
+    bool canPartition(vector<int> &nums) {
         int n = nums.size(), totalSum = 0;
         for (int i = 0; i < n; i++)
             totalSum += nums[i];
@@ -78,4 +79,3 @@ public:
     }
 };
 // @lc code=end
-

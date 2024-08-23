@@ -6,8 +6,9 @@
 
 // @lc code=start
 class Solution {
-public:
-    void dfs(int node, vector<vector<int>>& g, vector<int>& vis, stack<int>& st) {
+  public:
+    void dfs(int node, vector<vector<int>> &g, vector<int> &vis,
+             stack<int> &st) {
         vis[node] = 1;
         for (auto ch : g[node]) {
             if (vis[ch])
@@ -16,7 +17,8 @@ public:
         }
         st.push(node);
     }
-    void dfs2(int node, vector<vector<int>>& gr, vector<int>& v, vector<int>& temp) {
+    void dfs2(int node, vector<vector<int>> &gr, vector<int> &v,
+              vector<int> &temp) {
         v[node] = 1;
         if (gr[node].size() == 0)
             return;
@@ -27,7 +29,9 @@ public:
             dfs2(ch, gr, v, temp);
         }
     }
-    void dfs_to_check_outdegree(int v, vector<vector<int>>& g, map<int, int>& mp, vector<int>& visted, bool& flg) {
+    void dfs_to_check_outdegree(int v, vector<vector<int>> &g,
+                                map<int, int> &mp, vector<int> &visted,
+                                bool &flg) {
         visted[v] = 1;
         for (auto ch : g[v]) {
             if (mp[ch] != 1) {
@@ -105,4 +109,3 @@ public:
     }
 };
 // @lc code=end
-

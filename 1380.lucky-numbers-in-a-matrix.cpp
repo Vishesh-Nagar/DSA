@@ -6,37 +6,37 @@
 
 // @lc code=start
 class Solution {
-public:
-  vector<int> luckyNumbers(vector<vector<int>> &matrix) {
-    vector<int> temp1,temp2;
-    vector<int> ans;
-    int n = matrix.size(), m = matrix[0].size();
-    for (int r = 0; r < n; r++) {
-      int minr = matrix[r][0];
-      for (int c = 0; c < m; c++) {
-        minr = min(minr, matrix[r][c]);
-      }
-      temp1.push_back(minr);
-    }
-    for (int c = 0; c < m; c++) {
-      int maxc = matrix[0][c];
-      for (int r = 0; r < n; r++) {
-        maxc = max(maxc, matrix[r][c]);
-      }
-      temp2.push_back(maxc);
-    }
-    for (int i = 0; i < temp.size(); i++) {
-      bool flag = true;
-      for (int j = 0; j < temp.size(); j++) {
-        if (i != j && temp[i] > temp[j]) {
-          flag = false;
+  public:
+    vector<int> luckyNumbers(vector<vector<int>> &matrix) {
+        vector<int> temp1, temp2;
+        vector<int> ans;
+        int n = matrix.size(), m = matrix[0].size();
+        for (int r = 0; r < n; r++) {
+            int minr = matrix[r][0];
+            for (int c = 0; c < m; c++) {
+                minr = min(minr, matrix[r][c]);
+            }
+            temp1.push_back(minr);
         }
-      }
-      if (flag) {
-        ans.push_back(temp[i]);
-      }
+        for (int c = 0; c < m; c++) {
+            int maxc = matrix[0][c];
+            for (int r = 0; r < n; r++) {
+                maxc = max(maxc, matrix[r][c]);
+            }
+            temp2.push_back(maxc);
+        }
+        for (int i = 0; i < temp.size(); i++) {
+            bool flag = true;
+            for (int j = 0; j < temp.size(); j++) {
+                if (i != j && temp[i] > temp[j]) {
+                    flag = false;
+                }
+            }
+            if (flag) {
+                ans.push_back(temp[i]);
+            }
+        }
+        return ans;
     }
-    return ans;
-  }
 };
 // @lc code=end
