@@ -7,28 +7,30 @@
 // @lc code=start
 class Solution {
   public:
-    int solve(int n, vector<int> &coins, int target, int ind) {
-        if (ind == 0) {
-            if (target % coins[ind] == 0)
-                return 1;
-            else
-                return 0;
+    int spaceOptimized(int ind, int target, vector<int> &coins, int n,
+                       vector<int> &prev, vector<int> &curr) {
+        for (int tar = 0; tar <= target; tar++) {
+            prev[tar] = (tar % coins[0] == 0);
         }
-        if (target == 0)
-            return 1;
-        if (target < 0)
-            return 0;
-        int notTake = solve(n, coins, target, ind - 1);
-        int take = 0;
-        if (coins[ind] <= target)
-            take = solve(n, coins, target - coins[ind], ind);
-        return notTake + take;
+        for (int ind = 1; ind < n; ind++) {
+            for (int tar = 0; tar <= target; tar++) {
+                int notTake = prev[tar];
+                int take = 0;
+                if (coins[ind] <= tar)
+                    take = curr[tar - coins[ind]];
+                curr[tar] = notTake + take;
+            }
+            prev = curr;
+        }
+        return prev[target];
     }
     int change(int amount, vector<int> &coins) {
         int n = coins.size();
         if (n == 0)
             return 0;
-        return solve(n, coins, amount, n - 1);
+        vector<vector<int>> dp(n, vector<int>(amount + 1, 0));
+        vector<int> prev(amount + 1, 0), curr(amount + 1, 0);
+        return spaceOptimized(n - 1, amount, coins, n, prev, curr);
     }
 };
 // @lc code=end
