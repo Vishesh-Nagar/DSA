@@ -1,16 +1,12 @@
 class Solution {
 public:
     bool checkString(string s) {
-        int n = s.size();
-        int i = 0;
-        while (s[i] == 'a')
-            i++;
-            
-        int j = i + 1;
-        while (j < n) {
-            if (s[j] == 'a')
+        bool flag = false;
+        for (char c : s) {
+            if (c == 'b')
+                flag = true;
+            if (c == 'a' && flag == true)
                 return false;
-            j++;
         }
         return true;
     }
