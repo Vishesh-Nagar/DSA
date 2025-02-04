@@ -2,12 +2,14 @@ class Solution {
 public:
     int maxAscendingSum(vector<int>& nums) {
         int ans = 0;
-        for (int i = 0; i < nums.size(); i++) {
-            int curr = nums[i];
-            for (int j = i + 1; j < nums.size() && nums[j] > nums[j - 1]; j++)
-                curr += nums[j];
-            ans = max(ans, curr);
+        int curr = nums[0];
+        for (int i = 1; i < nums.size(); ++i) {
+            if (nums[i] <= nums[i - 1]) {
+                ans = max(ans, curr);
+                curr = 0;
+            }
+            curr += nums[i];
         }
-        return ans;
+        return max(ans, curr);
     }
 };
