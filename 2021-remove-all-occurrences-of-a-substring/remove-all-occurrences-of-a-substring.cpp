@@ -1,33 +1,53 @@
 class Solution {
 public:
     string removeOccurrences(string s, string part) {
+        vector<int> kmp = helper(part);
         stack<char> st;
-        int n = s.length();
-        int m = part.length();
-        for (int i = 0; i < n; i++) {
-            st.push(s[i]);
-            if (st.size() >= m && checkMatch(st, part, m)) {
-                for (int j = 0; j < m; j++) {
+        vector<int> pattern(s.length() + 1, 0);
+        for (int i = 0, j = 0; i < s.length(); i++) {
+            char c = s[i];
+            st.push(c);
+            if (c == part[j]) {
+                pattern[st.size()] = ++j;
+                if (j == part.length()) {
+                    int rem = part.length();
+                    while (rem != 0) {
+                        st.pop();
+                        rem--;
+                    }
+                    j = st.empty() ? 0 : pattern[st.size()];
+                }
+            } else {
+                if (j != 0) {
+                    i--;
+                    j = kmp[j - 1];
                     st.pop();
+                } else {
+                    pattern[st.size()] = 0;
                 }
             }
         }
-        string result = "";
+        string ans = "";
         while (!st.empty()) {
-            result = st.top() + result;
+            ans = st.top() + ans;
             st.pop();
         }
-        return result;
+        return ans;
     }
-
-    bool checkMatch(stack<char>& st, string& part, int m) {
-        stack<char> temp = st;
-        for (int i = m - 1; i >= 0; i--) {
-            if (temp.top() != part[i]) {
-                return false;
+    
+    vector<int> helper(string pattern) {
+        vector<int> lps(pattern.length(), 0);
+        for (int i = 1, j = 0; i < pattern.length();) {
+            if (pattern[i] == pattern[j]) {
+                lps[i] = ++j;
+                i++;
+            } else if (j != 0) {
+                j = lps[j - 1];
+            } else {
+                lps[i] = 0;
+                i++;
             }
-            temp.pop();
         }
-        return true;
+        return lps;
     }
 };
