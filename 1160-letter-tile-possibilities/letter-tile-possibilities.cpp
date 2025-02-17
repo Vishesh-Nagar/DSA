@@ -1,21 +1,22 @@
 class Solution {
 public:
     int numTilePossibilities(string tiles) {
-        unordered_set<string> st;
-        vector<bool> vis(tiles.length(), false);
-        helper(tiles, "", vis, st);
-        return st.size() - 1;
+        vector<int> count(26, 0);
+        for (char c : tiles)
+            count[c - 'A']++;
+        return helper(count);
     }
 
-    void helper(string& tiles, string current, vector<bool>& vis,
-                unordered_set<string>& st) {
-        st.insert(current);
-        for (int i = 0; i < tiles.length(); i++) {
-            if (!vis[i]) {
-                vis[i] = true;
-                helper(tiles, current + tiles[i], vis, st);
-                vis[i] = false;
-            }
+    int helper(vector<int>& count) {
+        int ans = 0;
+        for (int i = 0; i < 26; i++) {
+            if (count[i] == 0)
+                continue;
+            ans++;
+            count[i]--;
+            ans += helper(count);
+            count[i]++;
         }
+        return ans;
     }
 };
