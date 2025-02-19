@@ -2,23 +2,27 @@ class Solution {
 public:
     string getHappyString(int n, int k) {
         string curr = "";
-        vector<string> ans;
-        helper(n, curr, ans);
-        if (ans.size() < k)
-            return "";
-        sort(ans.begin(), ans.end());
-        return ans[k - 1];
+        string ans = "";
+        int idx = 0;
+        helper(n, k, curr, idx, ans);
+        return ans;
     }
 
-    void helper(int n, string curr, vector<string>& ans) {
+    void helper(int n, int k, string& curr, int& idx, string& ans) {
         if (curr.size() == n) {
-            ans.push_back(curr);
+            idx++;
+            if (idx == k)
+                ans = curr;
             return;
         }
         for (char c = 'a'; c <= 'c'; c++) {
             if (curr.size() > 0 && curr.back() == c)
                 continue;
-            helper(n, curr + c, ans);
+            curr += c;
+            helper(n, k, curr, idx, ans);
+            if (ans != "")
+                return;
+            curr.pop_back();
         }
     }
 };
