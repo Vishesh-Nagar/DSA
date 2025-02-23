@@ -1,13 +1,15 @@
 class Solution {
 public:
-#define vi vector<int>
-    TreeNode* constructFromPrePost(vi& pre, vi& post) {
+    TreeNode* constructFromPrePost(vector<int>& pre, vector<int>& post) {
         int n = pre.size();
-        return helper(0, n - 1, 0, pre, post);
+        vector<int> v(n + 1);
+        for (int index = 0; index < n; index++)
+            v[post[index]] = index;
+        return helper(0, n - 1, 0, pre, v);
     }
 
-    TreeNode* helper(int preStart, int preEnd, int postStart, vi& pre,
-                     vi& post) {
+    TreeNode* helper(int preStart, int preEnd, int postStart, vector<int>& pre,
+                     vector<int>& v) {
         if (preStart > preEnd)
             return NULL;
 
@@ -15,15 +17,12 @@ public:
             return new TreeNode(pre[preStart]);
 
         int leftRoot = pre[preStart + 1];
-        int nleft = 1;
-        while (post[postStart + nleft - 1] != leftRoot)
-            nleft++;
+        int nleft = v[leftRoot] - postStart + 1;
 
         TreeNode* root = new TreeNode(pre[preStart]);
-        root->left =
-            helper(preStart + 1, preStart + nleft, postStart, pre, post);
+        root->left = helper(preStart + 1, preStart + nleft, postStart, pre, v);
         root->right =
-            helper(preStart + nleft + 1, preEnd, postStart + nleft, pre, post);
+            helper(preStart + nleft + 1, preEnd, postStart + nleft, pre, v);
         return root;
     }
 };
