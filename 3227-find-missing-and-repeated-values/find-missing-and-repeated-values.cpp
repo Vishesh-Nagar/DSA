@@ -2,20 +2,20 @@ class Solution {
 public:
     vector<int> findMissingAndRepeatedValues(vector<vector<int>>& grid) {
         int n = grid.size();
-        vector<int> vis(n * n + 1, 0);
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                int val = grid[i][j];
-                vis[val]++;
+        int missing = -1, repeat = -1;
+        unordered_map<int, int> freq;
+        for (auto& row : grid) {
+            for (int num : row) {
+                freq[num]++;
             }
         }
-        int twice, miss;
-        for (int i = 0; i < vis.size(); i++) {
-            if (vis[i] == 0)
-                miss = i;
-            if (vis[i] == 2)
-                twice = i;
+        for (int num = 1; num <= n * n; num++) {
+            if (!freq.count(num)) {
+                missing = num;
+            } else if (freq[num] == 2) {
+                repeat = num;
+            }
         }
-        return {twice, miss};
+        return {repeat, missing};
     }
 };
