@@ -2,7 +2,7 @@ class Solution {
 public:
     int minOperations(vector<vector<int>>& grid, int x) {
         vector<int> nums;
-        int ans = INT_MAX;
+        int ans = 0;
 
         for (int row = 0; row < grid.size(); row++) {
             for (int col = 0; col < grid[0].size(); col++) {
@@ -15,21 +15,19 @@ public:
         sort(nums.begin(), nums.end());
 
         int n = nums.size();
-        vector<int> pref(n, 0);
-        vector<int> suff(n, 0);
+        int pref = 0;
+        int suff = n - 1;
 
-        for (int i = 1; i < n; i++)
-            pref[i] = pref[i - 1] + nums[i - 1];
-
-        for (int i = n - 2; i >= 0; i--)
-            suff[i] = suff[i + 1] + nums[i + 1];
-
-        for (int i = 0; i < n; i++) {
-            int left = (nums[i] * i - pref[i]) / x;
-
-            int right = (suff[i] - nums[i] * (n - i - 1)) / x;
-
-            ans = min(ans, left + right);
+        while (pref < suff) {
+            if (pref < n - suff - 1) {
+                int prefOps = (pref + 1) * (nums[pref + 1] - nums[pref]) / x;
+                ans += prefOps;
+                pref++;
+            } else {
+                int suffOps = (n - suff) * (nums[suff] - nums[suff - 1]) / x;
+                ans += suffOps;
+                suff--;
+            }
         }
 
         return ans;
