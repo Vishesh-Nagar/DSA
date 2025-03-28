@@ -1,43 +1,59 @@
 class Solution {
 public:
-#define pii pair<int, int>
-    vector<pii> dir = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+#define ai3 array<int, 3>
+    static constexpr int dir[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
     vector<int> maxPoints(vector<vector<int>>& grid, vector<int>& queries) {
-        int n = grid.size(), m = grid[0].size();
-        vector<int> ans(queries.size(), 0);
+        int queryCount = queries.size();
+        vector<int> result(queryCount);
+        int n = grid.size();
+        int m = grid[0].size();
 
-        vector<pii> newQueries;
-        for (int i = 0; i < queries.size(); i++)
-            newQueries.push_back({queries[i], i});
+        int cells = n * m;
+        vector<int> threshold(cells + 1);
 
-        sort(newQueries.begin(), newQueries.end());
+        vector<vector<int>> val(n, vector<int>(m, INT_MAX));
 
-        priority_queue<pair<int, pii>, vector<pair<int, pii>>, greater<>> pq;
-        vector<vector<bool>> visited(n, vector<bool>(m, false));
-        int points = 0;
-        pq.push({grid[0][0], {0, 0}});
-        visited[0][0] = true;
+        val[0][0] = grid[0][0];
 
-        for (auto [val, idx] : newQueries) {
-            while (!pq.empty() && pq.top().first < val) {
-                auto [value, pos] = pq.top();
-                pq.pop();
-                int row = pos.first, col = pos.second;
-                points++;
+        priority_queue<ai3, vector<ai3>, greater<ai3>> pq;
+        pq.push({grid[0][0], 0, 0});
+        int visited = 0;
 
-                for (auto [drow, dcol] : dir) {
-                    int nrow = row + drow, ncol = col + dcol;
+        while (!pq.empty()) {
+            ai3 curr = pq.top();
+            pq.pop();
 
-                    if (nrow >= 0 && ncol >= 0 && nrow < n && ncol < m &&
-                        !visited[nrow][ncol]) {
-                        pq.push({grid[nrow][ncol], {nrow, ncol}});
-                        visited[nrow][ncol] = true;
-                    }
+            threshold[++visited] = curr[0];
+
+            for (const auto& d : dir) {
+                int nrow = curr[1] + d[0];
+                int ncol = curr[2] + d[1];
+
+                if (nrow >= 0 && nrow < n && ncol >= 0 && ncol < m &&
+                    val[nrow][ncol] == INT_MAX) {
+                    val[nrow][ncol] = max(curr[0], grid[nrow][ncol]);
+
+                    pq.push({val[nrow][ncol], nrow, ncol});
                 }
             }
-            ans[idx] = points;
         }
-        return ans;
+
+        for (int i = 0; i < queryCount; i++) {
+            int limit = queries[i];
+            int left = 0, right = cells;
+
+            while (left < right) {
+                int mid = left + (right - left + 1) / 2;
+                if (threshold[mid] < limit)
+                    left = mid;
+                else
+                    right = mid - 1;
+            }
+
+            result[i] = left;
+        }
+
+        return result;
     }
 };
