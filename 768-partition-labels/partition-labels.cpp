@@ -1,19 +1,29 @@
 class Solution {
 public:
     vector<int> partitionLabels(string s) {
-        vector<int> last(26, 0);
-        for (int i = 0; i < s.size(); ++i)
+        vector<int> ans;
+        int last[26] = {0}, first[26] = {0};
+        int start = 0, end = 0;
+
+        for (int i = 0; i < s.length(); i++)
             last[s[i] - 'a'] = i;
 
-        int start = 0, end = 0;
-        vector<int> ans;
-        for (int i = 0; i < s.size(); ++i) {
-            end = max(end, last[s[i] - 'a']);
-            if (i == end) {
-                ans.push_back(i - start + 1);
-                start = i + 1;
+        for (int i = 0; i < s.length(); i++) {
+            if (!first[s[i] - 'a'])
+                first[s[i] - 'a'] = i;
+
+            if (end < first[s[i] - 'a']) {
+                ans.push_back(end - start + 1);
+                start = i;
+                end = i;
             }
+
+            end = max(end, last[s[i] - 'a']);
         }
+
+        if (end - start + 1 > 0)
+            ans.push_back(end - start + 1);
+
         return ans;
     }
 };
