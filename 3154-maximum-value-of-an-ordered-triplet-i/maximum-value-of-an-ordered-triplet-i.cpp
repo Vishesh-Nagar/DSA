@@ -3,11 +3,11 @@ public:
     long long maximumTripletValue(vector<int>& nums) {
         int n = nums.size();
         long long ans = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                for (int k = j + 1; k < n; k++) {
-                    ans = max(ans, (((nums[i] - nums[j]) + 0LL) * nums[k]) + 0LL);
-                }
+        for (int k = 2; k < n; k++) {
+            int pref = nums[0];
+            for (int j = 1; j < k; j++) {
+                ans = max(ans, (long long)(pref - nums[j]) * nums[k]);
+                pref = max(pref, nums[j]);
             }
         }
         return ans;
