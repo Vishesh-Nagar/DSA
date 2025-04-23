@@ -10,18 +10,17 @@ public:
     }
 
     int countLargestGroup(int n) {
-        map<int, int> mp;
+        vector<int> v(37, 0);
         for (int i = 1; i <= n; i++)
-            mp[sum(i)]++;
+            v[sum(i)]++;
 
         int count = 0, ans = 0;
-        for (auto it : mp) {
-            if (it.second > count) {
-                count = it.second;
+        for (int i = 1; i < 37; i++) {
+            if (v[i] > count) {
+                count = v[i];
                 ans = 1;
-            } else if (it.second == count) {
+            } else if (v[i] == count)
                 ans++;
-            }
         }
         return ans;
     }
