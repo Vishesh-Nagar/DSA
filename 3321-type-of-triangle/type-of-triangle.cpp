@@ -4,9 +4,10 @@ public:
         int a = nums[0], b = nums[1], c = nums[2];
         if (a + b <= c || a + c <= b || b + c <= a)
             return "none";
-        if (a == b && b == c)
+        unordered_set<int> s(nums.begin(), nums.end());
+        if (s.size() == 1)
             return "equilateral";
-        if (a == b || b == c || a == c)
+        if (s.size() == 2)
             return "isosceles";
         return "scalene";
     }
