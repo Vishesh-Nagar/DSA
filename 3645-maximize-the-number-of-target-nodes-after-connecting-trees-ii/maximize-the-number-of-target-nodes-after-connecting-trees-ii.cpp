@@ -1,39 +1,72 @@
 class Solution {
 public:
-    int dfs(int node, int parent, int depth,
-            const vector<vector<int>>& children, vector<int>& color) {
-        int res = 1 - depth % 2;
-        color[node] = depth % 2;
-        for (int child : children[node]) {
-            if (child == parent)
-                continue;
-            res += dfs(child, node, depth + 1, children, color);
+    vector<bool> oddEven(vector<vector<int>>& adj) {
+        vector<bool> v(adj.size());
+
+        bool isEven = false;
+        queue<pair<int, int>> q;
+        q.emplace(make_pair(0, -1));
+
+        while (!q.empty()) {
+            isEven ^= true;
+            int s = q.size();
+            for (int i = 0; i < s; i++) {
+                int node = q.front().first;
+                int parent = q.front().second;
+                q.pop();
+                v[node] = isEven;
+                for (int it : adj[node]) {
+                    if (it == parent)
+                        continue;
+                    q.emplace(it, node);
+                }
+            }
         }
-        return res;
+
+        return v;
     }
 
-    vector<int> build(const vector<vector<int>>& edges, vector<int>& color) {
-        int n = edges.size() + 1;
-        vector<vector<int>> children(n);
-        for (const auto& edge : edges) {
-            children[edge[0]].push_back(edge[1]);
-            children[edge[1]].push_back(edge[0]);
-        }
-        int res = dfs(0, -1, 0, children, color);
-        return {res, n - res};
+    vector<int> findOddEvenCount(vector<bool>& vertex) {
+        vector<int> v = {0, 0};
+        for (bool b : vertex)
+            v[b]++;
+
+        return v;
     }
 
     vector<int> maxTargetNodes(vector<vector<int>>& edges1,
                                vector<vector<int>>& edges2) {
-        int n = edges1.size() + 1, m = edges2.size() + 1;
-        vector<int> tree1(n);
-        vector<int> tree2(m);
-        vector<int> count1 = build(edges1, tree1);
-        vector<int> count2 = build(edges2, tree2);
-        vector<int> res(edges1.size() + 1);
-        for (int i = 0; i < n; i++) {
-            res[i] = count1[tree1[i]] + max(count2[0], count2[1]);
+
+        vector<vector<int>> tree1(edges1.size() + 1);
+        vector<vector<int>> tree2(edges2.size() + 1);
+
+        for (auto e : edges1) {
+            int u = e[0], v = e[1];
+            tree1[u].push_back(v);
+            tree1[v].push_back(u);
         }
-        return res;
+        for (auto e : edges2) {
+            int u = e[0], v = e[1];
+            tree2[u].push_back(v);
+            tree2[v].push_back(u);
+        }
+
+        vector<bool> buildTree1 = oddEven(tree1);
+        vector<int> build1 = findOddEvenCount(buildTree1);
+
+        vector<bool> buildTree2 = oddEven(tree2);
+        vector<int> build2 = findOddEvenCount(buildTree2);
+
+        int val = max(build2.front(), build2.back());
+        vector<int> ans(tree1.size(), val);
+
+        for (int i = 0; i < tree1.size(); i++) {
+            if (buildTree1[i])
+                ans[i] += build1[1];
+            else
+                ans[i] += build1[0];
+        }
+
+        return ans;
     }
 };
