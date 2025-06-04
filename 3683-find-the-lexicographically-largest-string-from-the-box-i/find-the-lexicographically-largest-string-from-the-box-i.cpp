@@ -1,12 +1,26 @@
 class Solution {
 public:
+    string lastSubstring(string s) {
+        int i = 0, j = 1, n = s.size();
+        while (j < n) {
+            int k = 0;
+            while (j + k < n && s[i + k] == s[j + k])
+                k++;
+            if (j + k < n && s[i + k] < s[j + k]) {
+                int t = i;
+                i = j;
+                j = max(j + 1, t + k + 1);
+            } else
+                j = j + k + 1;
+        }
+        return s.substr(i, n - i);
+    }
+
     string answerString(string word, int nF) {
         if (nF == 1)
             return word;
-        int n = word.size();
-        string ans;
-        for (int i = 0; i < n; i++)
-            ans = max(ans, word.substr(i, min(n - nF + 1, n - i)));
-        return ans;
+        string ans = lastSubstring(word);
+        int n = word.size(), m = ans.size();
+        return ans.substr(0, min(m, n - nF + 1));
     }
 };
