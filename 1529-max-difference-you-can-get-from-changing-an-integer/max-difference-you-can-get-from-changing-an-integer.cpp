@@ -1,28 +1,37 @@
 class Solution {
 public:
     int maxDiff(int num) {
-        auto change = [&](int x, int y) {
-            string num_s = to_string(num);
-            for (char& digit : num_s) {
-                if (digit - '0' == x) {
-                    digit = '0' + y;
+        auto replace = [](string& s, char x, char y) {
+            for (char& digit : s) {
+                if (digit == x) {
+                    digit = y;
                 }
             }
-            return num_s;
         };
 
-        int mini = num;
-        int maxi = num;
-        for (int x = 0; x < 10; ++x) {
-            for (int y = 0; y < 10; ++y) {
-                string res = change(x, y);
-                if (res[0] != '0') {
-                    int res_i = stoi(res);
-                    mini = min(mini, res_i);
-                    maxi = max(maxi, res_i);
+        string mini = to_string(num);
+        string maxi = to_string(num);
+        for (char digit : maxi) {
+            if (digit != '9') {
+                replace(maxi, digit, '9');
+                break;
+            }
+        }
+        for (int i = 0; i < mini.size(); ++i) {
+            char digit = mini[i];
+            if (i == 0) {
+                if (digit != '1') {
+                    replace(mini, digit, '1');
+                    break;
+                }
+            } else {
+                if (digit != '0' && digit != mini[0]) {
+                    replace(mini, digit, '0');
+                    break;
                 }
             }
         }
-        return maxi - mini;
+
+        return stoi(maxi) - stoi(mini);
     }
 };
