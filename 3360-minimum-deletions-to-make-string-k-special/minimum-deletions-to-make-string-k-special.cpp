@@ -1,18 +1,17 @@
 class Solution {
 public:
-    int minimumDeletions(string word, int k) {
-        unordered_map<char, int> mp;
-        for (auto ch : word)
-            mp[ch]++;
-        int ans = word.size();
-        for (auto& [_, a] : mp) {
+    int minimumDeletions(string& s, int k) {
+        vector<int> freq(26, 0);
+        for (char& c : s)
+            freq[c - 'a']++;
+        int ans = s.size();
+        for (int& a : freq) {
             int del = 0;
-            for (auto& [_, b] : mp) {
-                if (a > b) {
+            for (int& b : freq) {
+                if (b < a)
                     del += b;
-                } else if (b > a + k) {
-                    del += b - (a + k);
-                }
+                else if (b > a + k)
+                    del += (b - (a + k));
             }
             ans = min(ans, del);
         }
