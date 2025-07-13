@@ -1,17 +1,16 @@
 class Solution {
 public:
-    int matchPlayersAndTrainers(vector<int>& pl, vector<int>& tr) {
-        priority_queue<int, vector<int>, greater<int>> p(pl.begin(), pl.end());
-        priority_queue<int, vector<int>, greater<int>> q(tr.begin(), tr.end());
+    int matchPlayersAndTrainers(vector<int>& players, vector<int>& trainers) {
+        int n = players.size(), m = trainers.size();
+        sort(players.begin(), players.end());
+        sort(trainers.begin(), trainers.end());
+
         int ans = 0;
-        while (!p.empty() && !q.empty()) {
-            if (p.top() > q.top())
-                q.pop();
-            else if (p.top() <= q.top()) {
+        for (int i = 0, j = 0; i < n && j < m; i++, j++) {
+            while (j < m && players[i] > trainers[j])
+                j++;
+            if (j < m)
                 ans++;
-                p.pop();
-                q.pop();
-            }
         }
         return ans;
     }
