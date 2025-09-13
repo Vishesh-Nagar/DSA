@@ -1,23 +1,21 @@
 class Solution {
 public:
     bool isVowel(char c) {
-        return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u');
+        return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
     }
 
     int maxFreqSum(string s) {
-        unordered_map<char, int> vowel, cons;
-        for (char c : s) {
-            if (isVowel(c))
-                vowel[c]++;
-            else
-                cons[c]++;
-        }
+        vector<int> freq(26, 0);
+        for (char c : s)
+            freq[c - 'a']++;
         int a = 0, b = 0;
-        for (auto it : vowel) {
-            a = max(a, it.second);
-        }
-        for (auto it : cons) {
-            b = max(b, it.second);
+        for (int i = 0; i < 26; i++) {
+            if (freq[i] > 0) {
+                if (isVowel('a' + i))
+                    a = max(a, freq[i]);
+                else
+                    b = max(b, freq[i]);
+            }
         }
         return a + b;
     }
