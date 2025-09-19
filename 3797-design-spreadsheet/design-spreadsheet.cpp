@@ -1,61 +1,25 @@
 class Spreadsheet {
 public:
-    int value(string a) {
-        if (a[0] < 'A' || a[0] > 'Z') {
-            return stoi(a);
-        }
-        auto [c, r] = location(a);
-        return grid[r][c];
-    }
-
-    pair<int, int> location(string a) {
-        int c = a[0] - 'A';
-        int r = 0;
-        for (int i = 1; i < a.length(); i++) {
-            int v = a[i] - '0';
-            r = r * 10 + v;
-        }
-        r--;
-        return {c, r};
-    }
-
-    vector<vector<int>> grid;
-    Spreadsheet(int rows) {
-        grid.assign(rows, vector<int>(27, 0));
-    }
+    unordered_map<string, int> cells;
+    Spreadsheet(int rows) {}
 
     void setCell(string cell, int value) {
-        auto [c, r] = location(cell);
-        grid[r][c] = value;
+        cells[cell] = value;
     }
 
     void resetCell(string cell) {
-        auto [c, r] = location(cell);
-        grid[r][c] = 0;
+        cells.erase(cell);
     }
 
     int getValue(string formula) {
-        string a = "";
-        int i = 1;
-        while (formula[i] != '+') {
-            a += formula[i++];
-        }
-
-        i++;
-        string b = "";
-        while (i < formula.length()) {
-            b += formula[i++];
-        }
-
-        int a1 = value(a), b1 = value(b);
-        return a1 + b1;
+        int idx = formula.find('+');
+        string left = formula.substr(1, idx - 1);
+        string right = formula.substr(idx + 1);
+        int valLeft = isalpha(left[0]) ? (cells.count(left) ? cells[left] : 0)
+                                       : stoi(left);
+        int valRight = isalpha(right[0])
+                           ? (cells.count(right) ? cells[right] : 0)
+                           : stoi(right);
+        return valLeft + valRight;
     }
 };
-
-/**
- * Your Spreadsheet object will be instantiated and called as such:
- * Spreadsheet* obj = new Spreadsheet(rows);
- * obj->setCell(cell,value);
- * obj->resetCell(cell);
- * int param_3 = obj->getValue(formula);
- */
