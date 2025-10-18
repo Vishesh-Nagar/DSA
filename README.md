@@ -1,3 +1,4 @@
+![LeetCode Stats](https://leetcard.jacoblin.cool/CL4IM?theme=dark&font=Khula&ext=heatmap)
 # Leetcode Solutions
 
 This repository contains solutions to various Leetcode problems in C++.
