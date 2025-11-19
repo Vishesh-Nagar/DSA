@@ -1,16 +1,9 @@
 class Solution {
 public:
     int findFinalValue(vector<int>& nums, int original) {
-        int n = nums.size();
+        set<int> st(nums.begin(), nums.end());
         while (true) {
-            bool flag = false;
-            for (int i : nums) {
-                if (i == original) {
-                    flag = true;
-                    break;
-                }
-            }
-            if (flag == true)
+            if (st.find(original) != st.end())
                 original *= 2;
             else
                 return original;
