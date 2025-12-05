@@ -3,17 +3,13 @@ public:
     int countPartitions(vector<int>& nums) {
         int n = nums.size();
         int ans = 0;
+        int totalSum = accumulate(nums.begin(), nums.end(), 0);
+        int leftSum = 0;
         for (int i = 1; i < n; i++) {
-            int leftSum = 0, rightSum = 0;
-            for (int j = 0; j <= i; j++) {
-                leftSum += nums[j];
-            }
-            for (int j = i + 1; j < n; j++) {
-                rightSum += nums[j];
-            }
-            if (abs(leftSum - rightSum) % 2 == 0) {
+            leftSum += nums[i - 1];
+            totalSum -= nums[i - 1];
+            if (abs(leftSum - totalSum) % 2 == 0)
                 ans++;
-            }
         }
         return ans;
     }
